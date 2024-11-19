@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import React, { useState, useEffect } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 
 export default function Dashboard() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     // Simulate fetching data from an API
+
     const fetchData = async () => {
       const response = [
         { name: 'To Do', value: 10 },

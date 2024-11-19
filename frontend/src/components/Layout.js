@@ -1,10 +1,10 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { useTheme } from 'next-themes'
-import { Sun, Moon, Menu } from 'lucide-react'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useTheme } from 'next-themes';
+import { Sun, Moon, Menu } from 'lucide-react';
 
 export default function Layout({ children }) {
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme();
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
@@ -46,5 +46,5 @@ export default function Layout({ children }) {
         {children}
       </main>
     </div>
-  )
+  );
 }

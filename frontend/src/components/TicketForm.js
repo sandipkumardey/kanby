@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Button } from './ui/Button'
+import { Input } from './ui/Input'
+import { Textarea } from './ui/Textarea'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/Select'
 
 const users = [
   { id: 'user1', name: 'John Doe' },
