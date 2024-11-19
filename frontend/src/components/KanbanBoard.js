@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/Dialog'
-import { Button } from './ui/Button'
-import TicketForm from './TicketForm'
-import Comments from './Comments'
+import React, { useState } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/Dialog';
+import { Button } from './ui/Button';
+import TicketForm from './TicketForm';
+import Comments from './Comments';
 
 const initialColumns = {
   todo: {
@@ -21,7 +21,7 @@ const initialColumns = {
     title: 'Done',
     taskIds: ['task-6'],
   },
-}
+};
 
 const initialTasks = {
   'task-1': { id: 'task-1', content: 'Create login page', priority: 'high', status: 'todo', assignedTo: 'user1', comments: [] },
@@ -30,64 +30,61 @@ const initialTasks = {
   'task-4': { id: 'task-4', content: 'Develop API endpoints', priority: 'medium', status: 'inProgress', assignedTo: 'user1', comments: [] },
   'task-5': { id: 'task-5', content: 'Write unit tests', priority: 'low', status: 'inProgress', assignedTo: 'user2', comments: [] },
   'task-6': { id: 'task-6', content: 'Set up CI/CD pipeline', priority: 'medium', status: 'done', assignedTo: 'user3', comments: [] },
-}
+};
 
 export default function KanbanBoard() {
-  const [columns, setColumns] = useState(initialColumns)
-  const [tasks, setTasks] = useState(initialTasks)
-  const [editingTask, setEditingTask] = useState(null)
+  const [columns, setColumns] = useState(initialColumns);
+  const [tasks, setTasks] = useState(initialTasks);
+  const [editingTask, setEditingTask] = useState(null);
 
   const onDragEnd = (result) => {
-    const { destination, source, draggableId } = result
+    const { destination, source, draggableId } = result;
 
     if (!destination) {
-      return
+      return;
     }
 
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return
+    if (destination.droppableId === source.droppableId && destination.index === source.index) {
+      return;
     }
 
-    const start = columns[source.droppableId]
-    const finish = columns[destination.droppableId]
+    const start = columns[source.droppableId];
+    const finish = columns[destination.droppableId];
 
     if (start === finish) {
-      const newTaskIds = Array.from(start.taskIds)
-      newTaskIds.splice(source.index, 1)
-      newTaskIds.splice(destination.index, 0, draggableId)
+      const newTaskIds = Array.from(start.taskIds);
+      newTaskIds.splice(source.index, 1);
+      newTaskIds.splice(destination.index, 0, draggableId);
 
       const newColumn = {
         ...start,
         taskIds: newTaskIds,
-      }
+      };
 
       setColumns({
         ...columns,
         [newColumn.id]: newColumn,
-      })
+      });
     } else {
-      const startTaskIds = Array.from(start.taskIds)
-      startTaskIds.splice(source.index, 1)
+      const startTaskIds = Array.from(start.taskIds);
+      startTaskIds.splice(source.index, 1);
       const newStart = {
         ...start,
         taskIds: startTaskIds,
-      }
+      };
 
-      const finishTaskIds = Array.from(finish.taskIds)
-      finishTaskIds.splice(destination.index, 0, draggableId)
+      const finishTaskIds = Array.from(finish.taskIds);
+      finishTaskIds.splice(destination.index, 0, draggableId);
       const newFinish = {
         ...finish,
         taskIds: finishTaskIds,
-      }
+      };
 
       setColumns({
         ...columns,
         [newStart.id]: newStart,
         [newFinish.id]: newFinish,
-      })
+      });
 
       setTasks({
         ...tasks,
@@ -95,17 +92,17 @@ export default function KanbanBoard() {
           ...tasks[draggableId],
           status: finish.id,
         },
-      })
+      });
     }
-  }
+  };
 
   const handleCreateTicket = (newTicket) => {
-    const taskId = `task-${Date.now()}`
+    const taskId = `task-${Date.now()}`;
     const updatedTasks = {
       ...tasks,
       [taskId]: { id: taskId, content: newTicket.title, ...newTicket, comments: [] },
-    }
-    setTasks(updatedTasks)
+    };
+    setTasks(updatedTasks);
 
     const updatedColumns = {
       ...columns,
@@ -113,37 +110,37 @@ export default function KanbanBoard() {
         ...columns[newTicket.status],
         taskIds: [...columns[newTicket.status].taskIds, taskId],
       },
-    }
-    setColumns(updatedColumns)
-  }
+    };
+    setColumns(updatedColumns);
+  };
 
   const handleUpdateTicket = (updatedTicket) => {
     const updatedTasks = {
       ...tasks,
       [updatedTicket.id]: { ...tasks[updatedTicket.id], ...updatedTicket },
-    }
-    setTasks(updatedTasks)
+    };
+    setTasks(updatedTasks);
 
     if (updatedTicket.status !== tasks[updatedTicket.id].status) {
-      const oldStatus = tasks[updatedTicket.id].status
-      const newStatus = updatedTicket.status
+      const oldStatus = tasks[updatedTicket.id].status;
+      const newStatus = updatedTicket.status;
 
       const updatedColumns = {
         ...columns,
         [oldStatus]: {
           ...columns[oldStatus],
-          taskIds: columns[oldStatus].taskIds.filter(id => id !== updatedTicket.id),
+          taskIds: columns[oldStatus].taskIds.filter((id) => id !== updatedTicket.id),
         },
         [newStatus]: {
           ...columns[newStatus],
           taskIds: [...columns[newStatus].taskIds, updatedTicket.id],
         },
-      }
-      setColumns(updatedColumns)
+      };
+      setColumns(updatedColumns);
     }
 
-    setEditingTask(null)
-  }
+    setEditingTask(null);
+  };
 
   const handleAddComment = (taskId, comment) => {
     const updatedTasks = {
@@ -152,12 +149,12 @@ export default function KanbanBoard() {
         ...tasks[taskId],
         comments: [
           ...tasks[taskId].comments,
-          { text: comment, user: 'Current User', timestamp: new Date().toISOString() }
+          { text: comment, user: 'Current User', timestamp: new Date().toISOString() },
         ],
       },
-    }
-    setTasks(updatedTasks)
-  }
+    };
+    setTasks(updatedTasks);
+  };
 
   return (
     <div>
@@ -229,10 +226,7 @@ export default function KanbanBoard() {
           </DialogHeader>
           {editingTask && (
             <>
-              <TicketForm
-                initialData={editingTask}
-                onSubmit={handleUpdateTicket}
-              />
+              <TicketForm initialData={editingTask} onSubmit={handleUpdateTicket} />
               <Comments
                 comments={editingTask.comments}
                 onAddComment={(comment) => handleAddComment(editingTask.id, comment)}
@@ -242,5 +236,5 @@ export default function KanbanBoard() {
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }
